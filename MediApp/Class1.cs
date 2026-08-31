@@ -64,4 +64,16 @@ namespace MediApp
         }
 
     }
+
+    public class Consulta {
+        public int paciente {get; set; }
+        public int Medico { get; set; }
+        public DateTime hora { get; set; }
+
+        public Consulta(int Paciente, int Medico, DateTime hora) { 
+        
+        }
+
+        public Consulta(int PAciente, int MEdico) : this() { }
+    }
 }
