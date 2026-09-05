@@ -4,14 +4,14 @@ using System.Text;
 
 namespace MediApp
 {
-    public abstract class Pessoa  //classe base para o cadastro de cliente e funcionarios
+    public abstract class Pessoa  
     {
-        // Definindo as propriedades
+
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Cpf { get; set; }
 
-        //Inicialização das propriedades
+
         public Pessoa(int id, string nome, string cpf)
         {
             Id = id;
