@@ -7,7 +7,7 @@ namespace MediApp
     public abstract class Pessoa  //classe base para o cadastro de cliente e funcionarios
     {
         // Definindo as propriedades
-        public int Id { get; set; } 
+        public int Id { get; set; }
         public string Nome { get; set; }
         public string Cpf { get; set; }
 
@@ -26,12 +26,12 @@ namespace MediApp
     }
 
     public class Paciente : Pessoa //Classe para cadastro de paciente, herda de pessoa
-    { 
-    
-        public bool PlanoDeSaude { get; set;}
+    {
+
+        public bool PlanoDeSaude { get; set; }
 
         //Inicialização das propriedades id nome e cpf são herdados de pessoa e o plano de saude é configurado aqui
-        public Paciente(int id, string nome, string cpf, bool temPlanoSaude) : base(id, nome, cpf) 
+        public Paciente(int id, string nome, string cpf, bool temPlanoSaude) : base(id, nome, cpf)
         {
             PlanoDeSaude = temPlanoSaude;
         }
@@ -45,13 +45,13 @@ namespace MediApp
         }
     }
 
-    public class Medico : Pessoa 
-    { 
+    public class Medico : Pessoa
+    {
         public string CRM { get; set; }
         public string Especialidade { get; set; }
         public decimal ValorConsulta { get; set; }
 
-        public Medico(int id, string nome, string cpf, string crm, string especialidade, decimal valorConsulta ) : base(id, nome, cpf) 
+        public Medico(int id, string nome, string cpf, string crm, string especialidade, decimal valorConsulta) : base(id, nome, cpf)
         {
             CRM = crm;
             Especialidade = especialidade;
@@ -66,14 +66,37 @@ namespace MediApp
     }
 
     public class Consulta {
-        public int paciente {get; set; }
-        public int Medico { get; set; }
-        public DateTime hora { get; set; }
+        public Paciente Paciente { get; set; }
+        public Medico Medico { get; set; }
+        public DateTime DataHora { get; set; }
 
-        public Consulta(int Paciente, int Medico, DateTime hora) { 
-        
+
+        public Consulta(Paciente paciente, Medico medico, DateTime dataHora)
+        {
+            Paciente = paciente;
+            Medico = medico;
+            DataHora = dataHora;
         }
 
-        public Consulta(int PAciente, int MEdico) : this() { }
-    }
-}
+        public Consulta(Paciente paciente, Medico medico) : this(paciente, medico, DateTime.Now)
+        {
+         
+        }
+
+        public decimal CalcularValorFinal(decimal descontoPercentual = 20m) {
+            
+            if (Paciente.PlanoDeSaude)
+            {
+                decimal fatorDesconto = 1 - (descontoPercentual / 100m);
+               return Medico.ValorConsulta * fatorDesconto;
+            }
+            else {
+                return  Medico.ValorConsulta;           
+            } 
+        
+        }
+         public void ExibirResumo() {
+            Console.WriteLine($"[Consulta] Data: {DataHora:dd/MM/yyyy HH:mm} | Paciente: {Paciente.Nome} | Médico: Dr(a). {Medico.Nome} | Valor Final: {CalcularValorFinal():C2}");
+        }
+
+    }}
