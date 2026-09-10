@@ -1,14 +1,18 @@
 ﻿using System.Runtime.CompilerServices;
-
+using System.Linq;
 namespace MediApp
 {
 
     internal class Program
     {
+        private static List<Paciente> pacientesList = new List<Paciente>();
+        private static List<Medico> medicosList = new List<Medico>();
+        private static List<Consulta> consultasList = new List<Consulta>();
 
         static void Main(string[] args)
         {
             bool executando = true;
+            
 
             while (executando)
             {
@@ -38,6 +42,7 @@ namespace MediApp
                         CadastrarMedico();
                         break;
                     case 3:
+                        AgendarConsulta();
                         break;
                     case 4:
                         break;
@@ -67,7 +72,8 @@ namespace MediApp
             Console.WriteLine("Possui plano de saude? (S/N)"); 
             bool possuiPlano = Console.ReadLine().Trim().ToUpper() == "S";
 
-            Paciente paciente = new Paciente(id, nome, cpf, possuiPlano);
+            pacientesList.Add(new Paciente(id, nome, cpf, possuiPlano));
+            
         }
         private static void CadastrarMedico() {
             Console.Clear();
@@ -86,8 +92,32 @@ namespace MediApp
             Console.WriteLine("Valor da consulta: R$");
             decimal valorConsulta = decimal.Parse(Console.ReadLine());
 
-            Medico medico = new Medico(id, nome, cpf, crm, especialidade, valorConsulta);
+            medicosList.Add(new Medico(id, nome, cpf, crm, especialidade, valorConsulta));   
+        }
 
+        private static void AgendarConsulta() {
+            Console.Clear();
+            Console.WriteLine("-- AgendarConsulta --");
+
+            Console.WriteLine("Id Paciente: ");
+            int idPaciente = int.Parse(Console.ReadLine());
+            Paciente paciente = pacientesList.FirstOrDefault(p => p.Id == idPaciente);
+            if (paciente == null) {
+                Console.WriteLine("Paciente não encontrado");
+                return;
+            }
+
+            Console.WriteLine("Id Medico: ");
+            int idMedico = int.Parse(Console.ReadLine());
+            Medico medico = medicosList.FirstOrDefault(p => p.Id == idMedico);
+            if (medico == null)
+            {
+                Console.WriteLine("Medico não encontrado");
+                return;
+            }
+
+            consultasList.Add(new Consulta(paciente, medico));
+            Console.WriteLine("Consulta agendada com sucesso!");
         }
     }
 }
