@@ -1,12 +1,17 @@
-﻿namespace MediApp {
+﻿using System.Runtime.CompilerServices;
 
-    internal class Program {
+namespace MediApp
+{
+
+    internal class Program
+    {
 
         static void Main(string[] args)
         {
             bool executando = true;
 
-            while (executando) {
+            while (executando)
+            {
                 Console.Clear();
                 Console.WriteLine("Sistema de getão - MEDIAPP -");
                 Console.WriteLine("1. Cadastrar Paciente");
@@ -24,10 +29,13 @@
                     continue;
                 }
 
-                switch (opcao) {
+                switch (opcao)
+                {
                     case 1:
+                        CadastrarPaciente();
                         break;
                     case 2:
+                        CadastrarMedico();
                         break;
                     case 3:
                         break;
@@ -42,7 +50,44 @@
                 }
 
 
+            }
         }
+
+
+        private static void CadastrarPaciente() {
+            Console.Clear();
+            Console.WriteLine("-- Cadastro de Paciente --");
+
+            Console.WriteLine("ID do Paciente");
+            int id = int.Parse(Console.ReadLine());
+            Console.WriteLine("Nome: ");
+            string nome = Console.ReadLine();
+            Console.WriteLine("CPF: ");
+            string cpf = Console.ReadLine();
+            Console.WriteLine("Possui plano de saude? (S/N)"); 
+            bool possuiPlano = Console.ReadLine().Trim().ToUpper() == "S";
+
+            Paciente paciente = new Paciente(id, nome, cpf, possuiPlano);
+        }
+        private static void CadastrarMedico() {
+            Console.Clear();
+            Console.WriteLine("-- Cadastro de Médico --");
+
+            Console.WriteLine("ID do médico");
+            int id = int.Parse(Console.ReadLine());
+            Console.WriteLine("Nome: ");
+            string nome = Console.ReadLine();
+            Console.WriteLine("CPF: ");
+            string cpf = Console.ReadLine();
+            Console.WriteLine("CRM: ");
+            string crm = Console.ReadLine();
+            Console.WriteLine("Especialidade: ");
+            string especialidade = Console.ReadLine();
+            Console.WriteLine("Valor da consulta: R$");
+            decimal valorConsulta = decimal.Parse(Console.ReadLine());
+
+            Medico medico = new Medico(id, nome, cpf, crm, especialidade, valorConsulta);
+
         }
     }
 }
