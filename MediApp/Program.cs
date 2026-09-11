@@ -45,6 +45,7 @@ namespace MediApp
                         AgendarConsulta();
                         break;
                     case 4:
+                        ListarPessoa();
                         break;
                     case 5:
                         break;
@@ -94,7 +95,6 @@ namespace MediApp
 
             medicosList.Add(new Medico(id, nome, cpf, crm, especialidade, valorConsulta));   
         }
-
         private static void AgendarConsulta() {
             Console.Clear();
             Console.WriteLine("-- AgendarConsulta --");
@@ -118,6 +118,27 @@ namespace MediApp
 
             consultasList.Add(new Consulta(paciente, medico));
             Console.WriteLine("Consulta agendada com sucesso!");
+            Pause();
+        }
+
+        private static void ListarPessoa() {
+
+            Console.WriteLine("___Pacientes Cadastrador___");
+            foreach (var p in pacientesList) {
+                p.ExibirInfo();
+            }
+
+            Console.WriteLine("___Medicos Cadastrador___");
+            foreach (var m in medicosList) {
+                m.ExibirInfo();
+            }
+            Pause();
+            
+        }
+
+        private static void Pause() {
+            Console.WriteLine("Pressione ENTER para continuar...");
+            Console.ReadLine();
         }
     }
 }
