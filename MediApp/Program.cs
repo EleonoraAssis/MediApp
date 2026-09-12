@@ -48,6 +48,7 @@ namespace MediApp
                         ListarPessoa();
                         break;
                     case 5:
+                        Relatorio();
                         break;
                     case 0:
                         executando = false;
@@ -62,7 +63,7 @@ namespace MediApp
 
         private static void CadastrarPaciente() {
             Console.Clear();
-            Console.WriteLine("-- Cadastro de Paciente --");
+            Console.WriteLine("\n -- Cadastro de Paciente --");
 
             Console.WriteLine("ID do Paciente");
             int id = int.Parse(Console.ReadLine());
@@ -78,7 +79,7 @@ namespace MediApp
         }
         private static void CadastrarMedico() {
             Console.Clear();
-            Console.WriteLine("-- Cadastro de Médico --");
+            Console.WriteLine("\n -- Cadastro de Médico --");
 
             Console.WriteLine("ID do médico");
             int id = int.Parse(Console.ReadLine());
@@ -123,17 +124,46 @@ namespace MediApp
 
         private static void ListarPessoa() {
 
-            Console.WriteLine("___Pacientes Cadastrador___");
+            Console.WriteLine("\n___Pacientes Cadastrados___");
             foreach (var p in pacientesList) {
                 p.ExibirInfo();
             }
 
-            Console.WriteLine("___Medicos Cadastrador___");
+            Console.WriteLine("\n ___Medicos Cadastrados___");
             foreach (var m in medicosList) {
                 m.ExibirInfo();
             }
             Pause();
             
+        }
+        private static void Relatorio() { 
+            Console.Clear();
+            Console.WriteLine("__Relatorios e Estatísticas__");
+            if (!consultasList.Any())
+            {
+                Console.WriteLine("Nenhuma consulta agendada.");
+                
+            }
+            else
+            {
+                int totalConsultas = consultasList.Count;
+                Console.WriteLine($"Total de consultas realizadas: {totalConsultas}");
+
+                decimal faturamentoTotal = consultasList.Sum(c => c.CalcularValorFinal());
+                Console.WriteLine($"Faturamento total: {faturamentoTotal}");
+
+                int consultaPlano = consultasList.Where(c => c.Paciente.PlanoDeSaude).Count();
+                Console.WriteLine($"Consultas via plano de saúde {consultaPlano}");
+
+                foreach (var c in consultasList)
+                {
+                    c.ExibirResumo();
+
+                }
+            }
+            
+            Pause();
+
         }
 
         private static void Pause() {
