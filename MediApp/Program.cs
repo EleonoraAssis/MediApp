@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
+using System;
 namespace MediApp
 {
 
@@ -79,8 +80,7 @@ namespace MediApp
             Console.Clear();
             Console.WriteLine("\n -- Cadastro de Paciente --");
 
-            Console.WriteLine("ID do Paciente");
-            int id = int.Parse(Console.ReadLine());
+            int id = LerInt("Id do paciente: ");
             Console.WriteLine("Nome: ");
             string nome = Console.ReadLine();
             Console.WriteLine("CPF: ");
@@ -95,8 +95,7 @@ namespace MediApp
             Console.Clear();
             Console.WriteLine("\n -- Cadastro de Médico --");
 
-            Console.WriteLine("ID do médico");
-            int id = int.Parse(Console.ReadLine());
+            int id = LerInt("ID do médico");
             Console.WriteLine("Nome: ");
             string nome = Console.ReadLine();
             Console.WriteLine("CPF: ");
@@ -105,8 +104,7 @@ namespace MediApp
             string crm = Console.ReadLine();
             Console.WriteLine("Especialidade: ");
             string especialidade = Console.ReadLine();
-            Console.WriteLine("Valor da consulta: R$");
-            decimal valorConsulta = decimal.Parse(Console.ReadLine());
+            decimal valorConsulta = LerDecimal("Valor da consulta: R$");
 
             medicosList.Add(new Medico(id, nome, cpf, crm, especialidade, valorConsulta));
             ExibirMensagemSucesso("Medico cadastrado com sucesso!");
@@ -115,20 +113,18 @@ namespace MediApp
             Console.Clear();
             Console.WriteLine("-- AgendarConsulta --");
 
-            Console.WriteLine("Id Paciente: ");
-            int idPaciente = int.Parse(Console.ReadLine());
+            int idPaciente = LerInt("Id do paciente: ");
             Paciente paciente = pacientesList.FirstOrDefault(p => p.Id == idPaciente);
             if (paciente == null) {
-                Console.WriteLine("Paciente não encontrado");
+                ExibirMensagemErro("Paciente não encontrado");
                 return;
             }
 
-            Console.WriteLine("Id Medico: ");
-            int idMedico = int.Parse(Console.ReadLine());
+            int idMedico = LerInt("Id do médico: ");
             Medico medico = medicosList.FirstOrDefault(p => p.Id == idMedico);
             if (medico == null)
             {
-                Console.WriteLine("Medico não encontrado");
+                ExibirMensagemErro("Medico não encontrado");
                 return;
             }
 
@@ -137,7 +133,7 @@ namespace MediApp
             Pause();
         }
         private static void ListarPessoa() {
-
+            Console.Clear();
             Console.WriteLine("\n___Pacientes Cadastrados___");
             foreach (var p in pacientesList) {
                 p.ExibirInfo();
@@ -164,7 +160,7 @@ namespace MediApp
                 Console.WriteLine($"Total de consultas realizadas: {totalConsultas}");
 
                 decimal faturamentoTotal = consultasList.Sum(c => c.CalcularValorFinal());
-                Console.WriteLine($"Faturamento total: {faturamentoTotal}");
+                Console.WriteLine($"Faturamento total: {faturamentoTotal:C2}");
 
                 int consultaPlano = consultasList.Where(c => c.Paciente.PlanoDeSaude).Count();
                 Console.WriteLine($"Consultas via plano de saúde {consultaPlano}");
@@ -183,6 +179,27 @@ namespace MediApp
         private static void Pause() {
             Console.WriteLine("Pressione ENTER para continuar...");
             Console.ReadLine();
+        }
+        private static int LerInt(string mensagem) {
+            int valor;
+            while (true) {
+                Console.Write(mensagem);
+                if (int.TryParse(Console.ReadLine(), out valor)){
+                    return valor;
+                }
+                Console.WriteLine("Digite um número valido.");
+            }
+
+        }
+        private static decimal LerDecimal(string mensagem) {
+            decimal valor;
+            while (true) {
+                Console.Write(mensagem);
+                if (decimal.TryParse(Console.ReadLine(), out valor)) {
+                    return valor;
+                }
+                Console.WriteLine("Digite um valor valido.");
+            }
         }
     }
 }
