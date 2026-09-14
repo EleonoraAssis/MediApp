@@ -1,5 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using System.Linq;
+﻿using System.Linq;
+using System.Collections.Generic;
 namespace MediApp
 {
 
@@ -54,13 +54,27 @@ namespace MediApp
                         executando = false;
                         Console.WriteLine("Finalizando sistema...");
                         break;
+                    default:
+                        ExibirMensagemErro("Opção não encontrada no menu.");
+                        break;
                 }
 
 
             }
         }
 
-
+        private static void ExibirMensagemErro(string mensagem) {
+            Console.ForegroundColor =ConsoleColor.Red;
+            Console.WriteLine($"[Erro] {mensagem}");
+            Console.ResetColor();
+            Pause();
+        }
+        private static void ExibirMensagemSucesso(string mensagem) {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write($"{mensagem}");
+            Console.ResetColor();
+            Pause();
+        }
         private static void CadastrarPaciente() {
             Console.Clear();
             Console.WriteLine("\n -- Cadastro de Paciente --");
@@ -75,7 +89,7 @@ namespace MediApp
             bool possuiPlano = Console.ReadLine().Trim().ToUpper() == "S";
 
             pacientesList.Add(new Paciente(id, nome, cpf, possuiPlano));
-            
+            ExibirMensagemSucesso("Paciente cadastrado com sucesso!");
         }
         private static void CadastrarMedico() {
             Console.Clear();
@@ -94,7 +108,8 @@ namespace MediApp
             Console.WriteLine("Valor da consulta: R$");
             decimal valorConsulta = decimal.Parse(Console.ReadLine());
 
-            medicosList.Add(new Medico(id, nome, cpf, crm, especialidade, valorConsulta));   
+            medicosList.Add(new Medico(id, nome, cpf, crm, especialidade, valorConsulta));
+            ExibirMensagemSucesso("Medico cadastrado com sucesso!");
         }
         private static void AgendarConsulta() {
             Console.Clear();
@@ -121,7 +136,6 @@ namespace MediApp
             Console.WriteLine("Consulta agendada com sucesso!");
             Pause();
         }
-
         private static void ListarPessoa() {
 
             Console.WriteLine("\n___Pacientes Cadastrados___");
@@ -142,7 +156,7 @@ namespace MediApp
             if (!consultasList.Any())
             {
                 Console.WriteLine("Nenhuma consulta agendada.");
-                
+                return;
             }
             else
             {
@@ -155,6 +169,7 @@ namespace MediApp
                 int consultaPlano = consultasList.Where(c => c.Paciente.PlanoDeSaude).Count();
                 Console.WriteLine($"Consultas via plano de saúde {consultaPlano}");
 
+                Console.WriteLine("-- Detalhamento de Consultas---");
                 foreach (var c in consultasList)
                 {
                     c.ExibirResumo();
@@ -165,7 +180,6 @@ namespace MediApp
             Pause();
 
         }
-
         private static void Pause() {
             Console.WriteLine("Pressione ENTER para continuar...");
             Console.ReadLine();
